@@ -96,3 +96,36 @@ plt.savefig("tweet_counts.png")
 plt.close()
 
 print("Saved plot as tweet_counts.png")
+
+# -----------------------------
+# EXTRA CREDIT
+# Plot tweets by hour of day
+# -----------------------------
+from collections import Counter
+from datetime import datetime
+
+hour_counts = Counter()
+
+for t in tweets:
+    created = t.get("created_at")
+    if not created:
+        continue
+    
+    # Example format: 'Wed Oct 10 20:19:24 +0000 2018'
+    dt = datetime.strptime(created, "%a %b %d %H:%M:%S %z %Y")
+    hour_counts[dt.hour] += 1
+
+# Prepare data for plot
+hours = list(range(24))
+counts_by_hour = [hour_counts[h] for h in hours]
+
+plt.figure(figsize=(10,5))
+plt.bar(hours, counts_by_hour)
+plt.xlabel("Hour of Day (24-hour format)")
+plt.ylabel("Number of Tweets")
+plt.title("Number of Trump's Tweets by Hour of Day")
+plt.tight_layout()
+plt.savefig("tweets_by_hour.png")
+plt.close()
+
+print("Saved plot as tweets_by_hour.png")
