@@ -1,22 +1,36 @@
+#!/usr/bin/env python3
+
+'''
+# Lab: Analyzing Trump Tweets
+(keep your lab instructions here if you want)
+'''
+
 import json
 import glob
 import matplotlib.pyplot as plt
 
+
 # -----------------------------
-# 1) Load all tweets (ONCE)
+# 1) Load all tweets (CONDENSED files)
 # -----------------------------
 tweets = []
+files = sorted(glob.glob("condensed_*.json"))
 
-for filename in sorted(glob.glob("master_*.json")):
-    with open(filename, "r", encoding="utf-8") as f:
-        data = json.load(f)          # each file is a list of tweet dicts
-        tweets.extend(data)
+if len(files) == 0:
+    raise SystemExit(
+        "No condensed_*.json files found. Make sure condensed_2009.json ... condensed_2018.json "
+        "are in this folder (and you unzipped condensed_*.json.zip)."
+    )
+
+for fn in files:
+    with open(fn, "r", encoding="utf-8") as f:
+        tweets.extend(json.load(f))
 
 print("len(tweets)=", len(tweets))
 
+
 # -----------------------------
-# 2) Choose phrases to count
-#    (required + 3 extra)
+# 2) Choose phrases (required + 3 extra)
 # -----------------------------
 phrases = [
     "obama",
@@ -24,43 +38,47 @@ phrases = [
     "mexico",
     "russia",
     "fake news",
-    "china",          # extra
-    "wall",           # extra
+    "china",            # extra
+    "wall",             # extra
     "mainstream media"  # extra
 ]
+
 
 # -----------------------------
 # 3) Count tweets containing each phrase (case-insensitive)
 #    Each tweet counts at most once per phrase
 # -----------------------------
-counts = {phrase: 0 for phrase in phrases}
+counts = {p: 0 for p in phrases}
 
-for tweet in tweets:
-    text = tweet.get("text", "")
+for t in tweets:
+    text = t.get("text", "")
     text_lower = text.lower()
-
-    for phrase in phrases:
-        if phrase in text_lower:
-            counts[phrase] += 1
+    for p in phrases:
+        if p in text_lower:
+            counts[p] += 1
 
 print("counts=", counts)
 
-# -----------------------------
-# 4) Compute percents
-# -----------------------------
-total = len(tweets)
-percents = {phrase: (100.0 * counts[phrase] / total) for phrase in phrases}
 
 # -----------------------------
-# 5) Print markdown table (match lab format)
+# 4) Compute percent of tweets containing each phrase
+# -----------------------------
+total = len(tweets)
+percents = {p: (100.0 * counts[p] / total) for p in phrases}
+
+
+# -----------------------------
+# 5) Print markdown table (matches lab format)
+# -----------------------------
 col_width = max(len(p) for p in phrases)
 
 print(f"| {'phrase':<{col_width}} | percent of tweets |")
 print(f"| {'-'*col_width} | ----------------- |")
 
-for phrase in sorted(phrases):
-    pct_str = f"{percents[phrase]:05.2f}"  # like 00.17
-    print(f"| {phrase:>{col_width}} | {pct_str:<15} |")
+for p in sorted(phrases):
+    pct_str = f"{percents[p]:05.2f}"  # e.g. 00.17
+    print(f"| {p:>{col_width}} | {pct_str:<15} |")
+
 
 # -----------------------------
 # 6) Bar chart + save image

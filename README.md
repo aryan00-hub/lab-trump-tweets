@@ -1,6 +1,6 @@
 # Trump Tweet Phrase Analysis (2009–2018)
 
-This table shows the percent of Trump's tweets (2009–2018) that contain each phrase.
+Using the 2009–2018 condensed archive files, I computed the percent of tweets containing each phrase.
 
 PASTE YOUR TABLE HERE
 
