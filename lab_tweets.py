@@ -51,8 +51,7 @@ phrases = [
 counts = {p: 0 for p in phrases}
 
 for t in tweets:
-    text = t.get("text", "")
-    text_lower = text.lower()
+    text_lower = t.get("text", "").lower()
     for p in phrases:
         if p in text_lower:
             counts[p] += 1
@@ -69,15 +68,26 @@ percents = {p: (100.0 * counts[p] / total) for p in phrases}
 
 # -----------------------------
 # 5) Print markdown table (matches lab format)
+#    AND write it to table.md so you can copy into README easily
 # -----------------------------
 col_width = max(len(p) for p in phrases)
 
-print(f"| {'phrase':<{col_width}} | percent of tweets |")
-print(f"| {'-'*col_width} | ----------------- |")
+table_lines = []
+table_lines.append(f"| {'phrase':<{col_width}} | percent of tweets |")
+table_lines.append(f"| {'-'*col_width} | ----------------- |")
 
 for p in sorted(phrases):
     pct_str = f"{percents[p]:05.2f}"  # e.g. 00.17
-    print(f"| {p:>{col_width}} | {pct_str:<15} |")
+    table_lines.append(f"| {p:>{col_width}} | {pct_str:<15} |")
+
+# Print it nicely to terminal (easy to copy)
+print("\n" + "\n".join(table_lines) + "\n")
+
+# Save table to a file for easy copy/paste into README
+with open("table.md", "w", encoding="utf-8") as f:
+    f.write("\n".join(table_lines) + "\n")
+
+print("Saved table as table.md")
 
 
 # -----------------------------
@@ -97,6 +107,7 @@ plt.close()
 
 print("Saved plot as tweet_counts.png")
 
+
 # -----------------------------
 # EXTRA CREDIT
 # Plot tweets by hour of day
@@ -110,16 +121,15 @@ for t in tweets:
     created = t.get("created_at")
     if not created:
         continue
-    
+
     # Example format: 'Wed Oct 10 20:19:24 +0000 2018'
     dt = datetime.strptime(created, "%a %b %d %H:%M:%S %z %Y")
     hour_counts[dt.hour] += 1
 
-# Prepare data for plot
 hours = list(range(24))
 counts_by_hour = [hour_counts[h] for h in hours]
 
-plt.figure(figsize=(10,5))
+plt.figure(figsize=(10, 5))
 plt.bar(hours, counts_by_hour)
 plt.xlabel("Hour of Day (24-hour format)")
 plt.ylabel("Number of Tweets")
