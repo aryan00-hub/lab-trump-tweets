@@ -67,8 +67,9 @@ percents = {p: (100.0 * counts[p] / total) for p in phrases}
 
 
 # -----------------------------
-# 5) Print markdown table (matches lab format)
-#    AND write it to table.md so you can copy into README easily
+# -----------------------------
+# 5) Build markdown table + save to table.md
+#    AND auto-write README.md (TABLE ONLY)
 # -----------------------------
 col_width = max(len(p) for p in phrases)
 
@@ -80,15 +81,30 @@ for p in sorted(phrases):
     pct_str = f"{percents[p]:05.2f}"  # e.g. 00.17
     table_lines.append(f"| {p:>{col_width}} | {pct_str:<15} |")
 
-# Print it nicely to terminal (easy to copy)
-print("\n" + "\n".join(table_lines) + "\n")
+table_text = "\n".join(table_lines) + "\n"
 
-# Save table to a file for easy copy/paste into README
+# Print it (optional, but helpful)
+print("\n" + table_text)
+
+# Save table.md
 with open("table.md", "w", encoding="utf-8") as f:
-    f.write("\n".join(table_lines) + "\n")
-
+    f.write(table_text)
 print("Saved table as table.md")
 
+# Auto-write README.md with the table (replaces graph in README)
+readme_text = (
+    "# Trump Tweet Phrase Analysis (2009–2018)\n\n"
+    "This table shows the percent of tweets containing each phrase.\n\n"
+    + table_text +
+    "\n"
+    "## Extra Credit: Tweets by Hour of Day\n\n"
+    "![Tweets by hour](tweets_by_hour.png)\n"
+)
+
+with open("README.md", "w", encoding="utf-8") as f:
+    f.write(readme_text)
+
+print("Updated README.md (table included, graph removed)")
 
 # -----------------------------
 # 6) Bar chart + save image
