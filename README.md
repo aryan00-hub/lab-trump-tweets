@@ -17,4 +17,6 @@ This table shows the percent of tweets containing each phrase (n = 36307 tweets)
 
 ## Extra Credit: Tweets by Hour of Day
 
+This plot shows the distribution of tweet frequency by hour of day (UTC time).
+
 ![Tweets by hour](tweets_by_hour.png)
