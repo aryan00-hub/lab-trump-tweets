@@ -1,6 +1,6 @@
 # Trump Tweet Phrase Analysis (2009–2018)
 
-This table shows the percent of tweets containing each phrase.
+This table shows the percent of tweets containing each phrase (n = 36307 tweets).
 
 | phrase           | percent of tweets |
 | ---------------- | ----------------- |
@@ -12,6 +12,8 @@ This table shows the percent of tweets containing each phrase.
 |           russia | 01.13           |
 |            trump | 38.35           |
 |             wall | 00.91           |
+
+![Tweet phrase percentages](tweet_counts.png)
 
 ## Extra Credit: Tweets by Hour of Day
 
