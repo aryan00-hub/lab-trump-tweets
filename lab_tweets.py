@@ -129,11 +129,17 @@ counts_by_hour = [hour_counts[h] for h in hours]
 
 plt.figure(figsize=(10, 5))
 plt.bar(hours, counts_by_hour)
-plt.xlabel("Hour of Day (24-hour format)")
+
+# Make x-axis easier to read: label every 3 hours with AM/PM
+tick_hours = list(range(0, 24, 3))
+tick_labels = ["12 AM", "3 AM", "6 AM", "9 AM", "12 PM", "3 PM", "6 PM", "9 PM"]
+plt.xticks(tick_hours, tick_labels)
+
+plt.xlabel("Time of day (UTC)")
 plt.ylabel("Number of Tweets")
-plt.title("Number of Trump's Tweets by Hour of Day")
+plt.title("Number of Trump's Tweets by Time of Day")
 plt.tight_layout()
-plt.savefig(HOUR_PLOT)
+plt.savefig("tweets_by_hour.png")
 plt.close()
 
 print(f"Saved plot as {HOUR_PLOT}")
